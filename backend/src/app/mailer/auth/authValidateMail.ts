@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import MailValidation from "../../models/EmailValidation";
+import MailValidation from "../../models/auth/EmailValidation";
 import mailSender from "../mailSender";
 
 export const validateMail = async (to: string) => {

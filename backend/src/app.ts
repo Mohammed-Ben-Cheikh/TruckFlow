@@ -1,15 +1,15 @@
 import "dotenv";
 import express from "express";
+import morgan from "morgan";
 import errorMiddleware from "./app/Http/Middlewares/Error.middleware";
 import { responseHandler } from "./app/Http/Middlewares/responseHandler";
-import { validatorHandler } from "./app/Http/Middlewares/validatorHandler";
+import "./config/dbconfig";
 import authRoutes from "./routes/auth.routes";
 
 const app = express();
-
-app.use(express.json());
 app.use(responseHandler);
-app.use(validatorHandler);
+app.use(express.json());
+app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 
 app.use("/api/auth", authRoutes);
 

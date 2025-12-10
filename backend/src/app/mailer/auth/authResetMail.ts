@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import PasswordReset from "../../models/PasswordReset";
+import PasswordReset from "../../models/auth/PasswordReset";
 import mailSender from "../mailSender";
 
 export const passwordResetMail = async (to: string) => {

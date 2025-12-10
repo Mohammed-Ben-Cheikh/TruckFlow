@@ -1,11 +1,11 @@
 import bcryptjs from "bcryptjs";
 import type { NextFunction, Request, Response } from "express";
-import { generateToken } from "../../../utils/jwt";
-import { passwordResetMail } from "../../mailer/auth/authResetMail";
-import { validateMail } from "../../mailer/auth/authValidateMail";
-import EmailValidation from "../../models/EmailValidation";
-import PasswordReset from "../../models/PasswordReset";
-import User from "../../models/User";
+import { generateToken } from "../../../../utils/jwt";
+import { passwordResetMail } from "../../../mailer/auth/authResetMail";
+import { validateMail } from "../../../mailer/auth/authValidateMail";
+import EmailValidation from "../../../models/auth/EmailValidation";
+import PasswordReset from "../../../models/auth/PasswordReset";
+import User from "../../../models/User";
 
 class AuthController {
   static sanitizeUserData = (userData: any) => {

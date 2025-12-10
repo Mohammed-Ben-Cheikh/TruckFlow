@@ -21,6 +21,8 @@
   "scripts": {
     "backend": "npm --workspace=backend",
     "frontend": "npm --workspace=frontend",
+    "docker": "docker-compose up",
+    "dbSh": "docker exec -it truckflow-mongo mongosh",
     "dev": "concurrently \"npm run backend run dev\" \"npm run frontend run dev\""
   },
   "devDependencies": {
