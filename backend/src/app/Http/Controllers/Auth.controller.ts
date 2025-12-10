@@ -1,11 +1,11 @@
 import bcryptjs from "bcryptjs";
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
+import { generateToken } from "../../../utils/jwt";
 import { passwordResetMail } from "../../mailer/auth/authResetMail";
 import { validateMail } from "../../mailer/auth/authValidateMail";
 import EmailValidation from "../../models/EmailValidation";
 import PasswordReset from "../../models/PasswordReset";
 import User from "../../models/User";
-import { generateToken } from "../../../utils/jwt";
 
 class AuthController {
   static sanitizeUserData = (userData: any) => {
@@ -28,7 +28,7 @@ class AuthController {
     }
   };
 
-  static async register(req: Request, res: Response) {
+  static async register(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password, confirmPassword, firstName, lastName } =
         req.body;
@@ -80,12 +80,11 @@ class AuthController {
         );
       }
     } catch (error) {
-      console.log(error);
-      return res.error("Une erreur inattendue s'est produite", 500, error);
+      next(error);
     }
   }
 
-  static async login(req: Request, res: Response) {
+  static async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
@@ -118,12 +117,11 @@ class AuthController {
         200
       );
     } catch (error) {
-      console.log(error);
-      return res.error("Une erreur inattendue s'est produite", 500, error);
+      next(error);
     }
   }
 
-  static async validate(req: Request, res: Response) {
+  static async validate(req: Request, res: Response, next: NextFunction) {
     try {
       const { token } = req.body;
       const email = AuthController.decryptEmailFromToken(token);
@@ -155,12 +153,15 @@ class AuthController {
         200
       );
     } catch (error) {
-      console.log(error);
-      return res.error("Une erreur inattendue s'est produite", 500, error);
+      next(error);
     }
   }
 
-  static async validateMessage(req: Request, res: Response) {
+  static async validateMessage(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       const { email } = req.body;
       const user = await User.findOne({ email });
@@ -181,12 +182,11 @@ class AuthController {
         return res.error(mailResult.message, 500);
       }
     } catch (error) {
-      console.log(error);
-      return res.error("Une erreur inattendue s'est produite", 500, error);
+      next(error);
     }
   }
 
-  static async reset(req: Request, res: Response) {
+  static async reset(req: Request, res: Response, next: NextFunction) {
     try {
       const { password, confirmPassword, token } = req.body;
       if (password !== confirmPassword) {
@@ -222,12 +222,11 @@ class AuthController {
         200
       );
     } catch (error) {
-      console.log(error);
-      return res.error("Une erreur inattendue s'est produite", 500, error);
+      next(error);
     }
   }
 
-  static async resetMessage(req: Request, res: Response) {
+  static async resetMessage(req: Request, res: Response, next: NextFunction) {
     try {
       const { email } = req.body;
       const user = await User.findOne({ email });
@@ -241,12 +240,11 @@ class AuthController {
         return res.error(mailResult.message, 500);
       }
     } catch (error) {
-      console.log(error);
-      return res.error("Une erreur inattendue s'est produite", 500, error);
+      next(error);
     }
   }
 
-  static async getUserProfil(req: Request, res: Response) {
+  static async getUserProfil(req: Request, res: Response, next: NextFunction) {
     try {
       const userId =
         (req.user as any)?.userId ??
@@ -264,8 +262,7 @@ class AuthController {
         200
       );
     } catch (error) {
-      console.log(error);
-      return res.error("Une erreur inattendue s'est produite", 500, error);
+      next(error);
     }
   }
 }

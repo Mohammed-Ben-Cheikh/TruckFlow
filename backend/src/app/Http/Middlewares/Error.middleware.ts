@@ -9,3 +9,4 @@ const errorMiddleware = (
   console.log(err);
   return res.error("Une erreur inattendue s'est produite", 500, err);
 };
+export default errorMiddleware;
