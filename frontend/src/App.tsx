@@ -1,5 +1,8 @@
+import { RouterProvider } from "router-kit";
+import routes from "./routes";
+
 function App() {
-  return <h1 className="">TruckFlow Frontend</h1>;
+  return <RouterProvider routes={routes} />;
 }
 
 export default App;
