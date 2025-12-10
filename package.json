@@ -1,0 +1,29 @@
+{
+  "name": "truckflow",
+  "version": "1.0.0",
+  "description": "Application de suivi des trajets, carburant et maintenance pour flotte de camions",
+  "homepage": "https://github.com/Mohammed-Ben-Cheikh/TruckFlow#readme",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "bugs": {
+    "url": "https://github.com/Mohammed-Ben-Cheikh/TruckFlow/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mohammed-Ben-Cheikh/TruckFlow.git"
+  },
+  "license": "ISC",
+  "author": "mohammed-ben-cheikh",
+  "type": "module",
+  "scripts": {
+    "backend": "npm --workspace=backend",
+    "frontend": "npm --workspace=frontend",
+    "dev": "concurrently \"npm run backend run dev\" \"npm run frontend run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
