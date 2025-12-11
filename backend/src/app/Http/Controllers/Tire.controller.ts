@@ -3,23 +3,28 @@ import makeSlugFrom from "../../../utils/slug";
 import Tire from "../../models/Tire";
 
 class TireController {
+  static async findTire(slug: string, res: Response) {
+    if (!slug) return res.error("Slug manquant", 400);
+    const tire = await Tire.findOne({ slug });
+    if (!tire) return res.error("pneu introuvable", 404);
+    return tire;
+  }
+
   static async getTires(req: Request, res: Response, next: NextFunction) {
     try {
+      const tires = await Tire.find();
+      if (tires.length === 0) return res.error("Aucun pneu trouvé", 404);
+      return res.success({ tires }, "pneus récupérés avec succès");
     } catch (error) {
       next(error);
     }
   }
+
   static async getTire(req: Request, res: Response, next: NextFunction) {
     try {
       const { slug } = req.params;
-      if (!slug) {
-        return res.error("Slug manquant", 400);
-      }
-      const tire = await Tire.findOne({ slug });
-      if (!tire) {
-        return res.error("Tire introuvable", 404);
-      }
-      return res.success({ tire }, "Tire récupérée avec succès");
+      const tire = await TireController.findTire(slug!, res);
+      return res.success({ tire }, "pneu récupéré avec succès");
     } catch (error) {
       next(error);
     }
@@ -34,7 +39,16 @@ class TireController {
         used,
         kilometrageCurrent,
       } = req.body;
-      if (used && kilometrageCurrent === 0) {
+      if (
+        used &&
+        (kilometrageCurrent === undefined || kilometrageCurrent === null)
+      ) {
+        return res.error(
+          "Le kilométrage actuel est requis pour un pneu d'occasion",
+          400
+        );
+      }
+      if (used && kilometrageCurrent <= 0) {
         return res.error(
           "Le kilométrage actuel doit être supérieur à 0 pour un pneu d'occasion",
           400
@@ -51,7 +65,7 @@ class TireController {
         kilometrageCurrent,
       });
       await tire.save();
-      return res.success({ tire }, "Tire créée avec succès", 201);
+      return res.success({ tire }, "pneu créé avec succès", 201);
     } catch (error) {
       next(error);
     }
@@ -59,19 +73,36 @@ class TireController {
 
   static async updateTire(req: Request, res: Response, next: NextFunction) {
     try {
+      const {} = req.body;
       const { slug } = req.params;
       if (!slug) {
         return res.error("Slug manquant", 400);
       }
       const tire = await Tire.findOne({ slug });
       if (!tire) {
-        return res.error("Tire introuvable", 404);
+        return res.error("pneu introuvable", 404);
       }
-      return res.success({ tire }, "Tire récupérée avec succès");
     } catch (error) {
       next(error);
     }
   }
-  static async deleteTire(req: Request, res: Response, next: NextFunction) {}
+  static async deleteTire(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { slug } = req.params;
+      if (!slug) {
+        return res.error("Slug manquant", 400);
+      }
+      const tire = await TireController.findTire(slug!, res);
+      if (!tire || !("used" in tire)) {
+        return;
+      }
+      if (tire.used) {
+        return res.error("Impossible de supprimer un pneu d'occasion", 400);
+      }
+      return res.success({ tire }, "pneu supprimé avec succès");
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 export default TireController;

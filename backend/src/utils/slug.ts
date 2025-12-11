@@ -1,8 +1,4 @@
-const makeSlugFrom = (
-  signature: string,
-  from?: string,
-  isRandom?: boolean
-) => {
+const makeSlugFrom = (signature: string, from?: string, isRandom?: boolean) => {
   const timestamp = Date.now();
   const randomString = Math.random().toString(36).substring(2, 8);
   if (!from) return `truckflow-${signature}-${randomString}-${timestamp}`;
