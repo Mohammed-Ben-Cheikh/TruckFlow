@@ -73,15 +73,43 @@ class TireController {
 
   static async updateTire(req: Request, res: Response, next: NextFunction) {
     try {
-      const {} = req.body;
+      const {
+        reference,
+        brand,
+        diameter,
+        kilometrageMax,
+        used,
+        kilometrageCurrent,
+      } = req.body;
       const { slug } = req.params;
-      if (!slug) {
-        return res.error("Slug manquant", 400);
+      const tire = await TireController.findTire(slug!, res);
+      if (!tire || !("inUse" in tire)) {
+        return;
       }
-      const tire = await Tire.findOne({ slug });
-      if (!tire) {
-        return res.error("pneu introuvable", 404);
+      if (
+        used &&
+        (kilometrageCurrent === undefined || kilometrageCurrent === null)
+      ) {
+        return res.error(
+          "Le kilométrage actuel est requis pour un pneu d'occasion",
+          400
+        );
       }
+      if (used && kilometrageCurrent <= 0) {
+        return res.error(
+          "Le kilométrage actuel doit être supérieur à 0 pour un pneu d'occasion",
+          400
+        );
+      }
+      if (reference !== undefined) tire.reference = reference;
+      if (brand !== undefined) tire.brand = brand;
+      if (diameter !== undefined) tire.diameter = diameter;
+      if (kilometrageMax !== undefined) tire.kilometrageMax = kilometrageMax;
+      if (used !== undefined) tire.used = used;
+      if (kilometrageCurrent !== undefined)
+        tire.kilometrageCurrent = kilometrageCurrent;
+      await tire.save();
+      return res.success({ tire }, "pneu mis à jour avec succès");
     } catch (error) {
       next(error);
     }
@@ -89,11 +117,8 @@ class TireController {
   static async deleteTire(req: Request, res: Response, next: NextFunction) {
     try {
       const { slug } = req.params;
-      if (!slug) {
-        return res.error("Slug manquant", 400);
-      }
       const tire = await TireController.findTire(slug!, res);
-      if (!tire || !('inUse' in tire)) {
+      if (!tire || !("inUse" in tire)) {
         return;
       }
       if (tire.inUse) {
