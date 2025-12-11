@@ -29,6 +29,10 @@ const TireSchema = new Schema(
       type: String,
       default: null,
     },
+    inUse: {
+      type: Boolean,
+      default: false,
+    },
     used: {
       type: Boolean,
       default: false,

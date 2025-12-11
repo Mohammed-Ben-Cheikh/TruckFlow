@@ -93,12 +93,16 @@ class TireController {
         return res.error("Slug manquant", 400);
       }
       const tire = await TireController.findTire(slug!, res);
-      if (!tire || !("used" in tire)) {
+      if (!tire || !('inUse' in tire)) {
         return;
       }
-      if (tire.used) {
-        return res.error("Impossible de supprimer un pneu d'occasion", 400);
+      if (tire.inUse) {
+        return res.error(
+          "Impossible de supprimer un pneu en cours d'utilisation",
+          400
+        );
       }
+      await tire.deleteOne();
       return res.success({ tire }, "pneu supprimé avec succès");
     } catch (error) {
       next(error);
