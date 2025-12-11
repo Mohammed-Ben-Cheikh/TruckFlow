@@ -8,7 +8,18 @@ const TrailerSchema = new Schema(
       required: true,
       unique: true,
     },
-    type: String,
+    brand: {
+      type: String,
+      required: true,
+    },
+    img: {
+      type: String,
+      default: null,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       enum: ["available", "on_trip", "maintenance"],

@@ -8,10 +8,21 @@ const TireSchema = new Schema(
       required: true,
       unique: true,
     },
-    brand: String,
-    kilometrageStart: {
+    brand: {
+      type: String,
+      required: true,
+    },
+    diameter: {
       type: Number,
-      default: 0,
+      required: true,
+    },
+    img: {
+      type: String,
+      default: null,
+    },
+    used: {
+      type: Boolean,
+      default: false,
     },
     kilometrageCurrent: {
       type: Number,
@@ -19,7 +30,7 @@ const TireSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["good", "warning", "replace"],
+      enum: ["good", "warning", "critical"],
       default: "good",
     },
     mountedOn: {
