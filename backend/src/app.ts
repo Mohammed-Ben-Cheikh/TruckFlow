@@ -18,8 +18,8 @@ app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/tire", TireRoutes);
-app.use("/api/truck", TruckRoutes);
 app.use("/api/line", LineRoutes);
+app.use("/api/truck", TruckRoutes);
 app.use("/api/trailer", TrailerRoutes);
 
 app.use(errorMiddleware);

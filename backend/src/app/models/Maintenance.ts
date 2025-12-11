@@ -3,6 +3,11 @@ const { Schema } = mongoose;
 
 const MaintenanceSchema = new Schema(
   {
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     vehicleType: {
       type: String,
       enum: ["truck", "trailer"],

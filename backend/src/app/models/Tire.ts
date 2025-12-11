@@ -3,6 +3,11 @@ const { Schema } = mongoose;
 
 const TireSchema = new Schema(
   {
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     reference: {
       type: String,
       required: true,
@@ -13,6 +18,10 @@ const TireSchema = new Schema(
       required: true,
     },
     diameter: {
+      type: Number,
+      required: true,
+    },
+    kilometrageMax: {
       type: Number,
       required: true,
     },

@@ -1,14 +1,17 @@
-const makeSlugFrom = (from: string, signature: string) => {
+const makeSlugFrom = (
+  signature: string,
+  from?: string,
+  isRandom?: boolean
+) => {
   const timestamp = Date.now();
   const randomString = Math.random().toString(36).substring(2, 8);
-  if (!from) {
-    return `tirelire-${signature}-${timestamp}-${randomString}`;
-  }
+  if (!from) return `truckflow-${signature}-${randomString}-${timestamp}`;
   const normalizedFrom = from
     .toLowerCase()
     .replace(/[^a-z0-9]/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
-  return `darna-${signature}-${normalizedFrom}-${timestamp}-${randomString}`;
+  if (!isRandom) return `truckflow-${signature}-${normalizedFrom}-${timestamp}`;
+  return `truckflow-${signature}-${normalizedFrom}-${randomString}-${timestamp}`;
 };
 export default makeSlugFrom;

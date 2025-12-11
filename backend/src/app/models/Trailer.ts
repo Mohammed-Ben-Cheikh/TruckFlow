@@ -3,6 +3,11 @@ const { Schema } = mongoose;
 
 const TrailerSchema = new Schema(
   {
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     registration: {
       type: String,
       required: true,
