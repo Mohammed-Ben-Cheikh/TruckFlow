@@ -39,6 +39,7 @@ class TireController {
         used,
         kilometrageCurrent,
       } = req.body;
+      const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
       if (
         used &&
         (kilometrageCurrent === undefined || kilometrageCurrent === null)
@@ -63,6 +64,7 @@ class TireController {
         kilometrageMax,
         used,
         kilometrageCurrent,
+        img: imagePath,
       });
       await tire.save();
       return res.success({ tire }, "pneu créé avec succès", 201);
@@ -81,6 +83,7 @@ class TireController {
         used,
         kilometrageCurrent,
       } = req.body;
+      const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
       const { slug } = req.params;
       const tire = await TireController.findTire(slug!, res);
       if (!tire || !("inUse" in tire)) {
@@ -108,6 +111,7 @@ class TireController {
       if (used !== undefined) tire.used = used;
       if (kilometrageCurrent !== undefined)
         tire.kilometrageCurrent = kilometrageCurrent;
+      if (imagePath !== undefined) tire.img = imagePath;
       await tire.save();
       return res.success({ tire }, "pneu mis à jour avec succès");
     } catch (error) {

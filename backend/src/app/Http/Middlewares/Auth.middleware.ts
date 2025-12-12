@@ -42,7 +42,7 @@ export const authenticate = async (
 };
 
 export const is =
-  (roles: string) =>
+  (roles: string | string[]) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const decoded = verifyToken(
@@ -52,11 +52,7 @@ export const is =
       if (!user || !user.isActive) {
         return res.error("Utilisateur non trouvé ou désactivé", 401);
       }
-      if (
-        roles && !Array.isArray(roles)
-          ? [roles].includes(decoded.role)
-          : roles.includes(decoded.role)
-      ) {
+      if ((Array.isArray(roles) ? roles : [roles]).includes(decoded.role)) {
         req.user = {
           userId: decoded.userId,
           email: decoded.email,
