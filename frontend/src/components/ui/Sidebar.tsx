@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Link, useRouter } from "router-kit";
+import { Link, useLocation } from "router-kit";
 
 export type NavItem = {
   label: string;
@@ -16,7 +16,7 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ logo, items, footer, collapsed = false }: SidebarProps) => {
-  const { location } = useRouter();
+  const location = useLocation();
 
   return (
     <aside
