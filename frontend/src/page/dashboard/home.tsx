@@ -10,11 +10,11 @@ import {
 
 const navItems: NavItem[] = [
   { label: "Tableau de bord", href: "/" },
-  { label: "Camions", href: "/trucks" },
-  { label: "Remorques", href: "/trailers" },
+  { label: "Camions", href: "/trucks", badge: "24" },
+  { label: "Remorques", href: "/trailers", badge: "12" },
   { label: "Pneus", href: "/tires" },
   { label: "Lignes", href: "/lines" },
-  { label: "Maintenance", href: "/maintenance" },
+  { label: "Maintenance", href: "/maintenance", badge: "3" },
   { label: "Suivi", href: "/tracking" },
   { label: "Utilisateurs", href: "/users" },
 ];
@@ -42,9 +42,9 @@ const Home = () => {
       <div className="mb-6 grid gap-4 lg:grid-cols-2">
         <div className="rounded-xl border bg-white p-4 shadow-sm">
           <h2 className="text-base font-semibold">Actions rapides</h2>
-          <p className="text-sm text-slate-500">
-            Utilisez ces liens pour accéder aux modules CRUD.
-          </p>
+              <p className="text-sm text-slate-500">
+                Accès direct aux modules opérationnels.
+              </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {navItems.slice(1).map((item) => (
               <Link
@@ -65,7 +65,7 @@ const Home = () => {
             <li>Champs de formulaire avec label, hint et erreurs</li>
             <li>Modale réutilisable pour créer ou éditer</li>
             <li>Boutons avec variantes et chargement</li>
-          </ul>
+            </ul>
         </div>
       </div>
 
