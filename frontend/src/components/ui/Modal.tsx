@@ -10,6 +10,7 @@ type ModalProps = {
   footer?: ReactNode;
   size?: "sm" | "md" | "lg";
   showClose?: boolean;
+  hideFooter?: boolean;
 };
 
 const sizeMap: Record<NonNullable<ModalProps["size"]>, string> = {
@@ -27,6 +28,7 @@ const Modal = ({
   footer,
   size = "md",
   showClose = true,
+  hideFooter = false,
 }: ModalProps) => {
   if (!open) return null;
 
@@ -61,16 +63,18 @@ const Modal = ({
 
         <div className="px-6 py-4">{children}</div>
 
-        <div className="flex items-center justify-end gap-3 border-t px-6 py-4">
-          {footer ?? (
-            <>
-              <Button variant="ghost" onClick={onClose}>
-                Annuler
-              </Button>
-              <Button type="submit">Confirmer</Button>
-            </>
-          )}
-        </div>
+        {!hideFooter && (
+          <div className="flex items-center justify-end gap-3 border-t px-6 py-4">
+            {footer ?? (
+              <>
+                <Button variant="ghost" onClick={onClose}>
+                  Annuler
+                </Button>
+                <Button type="submit">Confirmer</Button>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

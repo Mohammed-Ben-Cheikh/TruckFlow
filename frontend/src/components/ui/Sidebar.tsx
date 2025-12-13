@@ -24,7 +24,7 @@ const Sidebar = ({ logo, items, footer, collapsed = false }: SidebarProps) => {
       <button
         type="button"
         aria-expanded={mobileOpen}
-        className="fixed left-4 top-4 z-50 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow md:hidden"
+        className="fixed right-4 bottom-4 z-50 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow md:hidden"
         onClick={() => setMobileOpen((prev) => !prev)}
       >
         Menu
@@ -38,7 +38,7 @@ const Sidebar = ({ logo, items, footer, collapsed = false }: SidebarProps) => {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex h-full min-w-[240px] flex-col border-r bg-white shadow-sm transition-transform duration-200 md:static md:h-screen ${
+        className={`fixed inset-y-0 left-0 z-40 flex h-full min-w-60 flex-col border-r bg-white shadow-sm transition-transform duration-200 md:static md:h-screen ${
           collapsed ? "md:w-20" : "md:w-64"
         } ${mobileOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >

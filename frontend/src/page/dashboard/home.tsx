@@ -3,14 +3,13 @@ import { Link } from "router-kit";
 import {
   Button,
   DashboardLayout,
-  InputField,
-  Modal,
+  FormModal,
   type NavItem,
 } from "../../components";
 
 const navItems: NavItem[] = [
   { label: "Tableau de bord", href: "/" },
-  { label: "Camions", href: "/trucks", badge: "24" },
+  { label: "Camions", href: "/trucks", badge: "new" },
   { label: "Remorques", href: "/trailers", badge: "12" },
   { label: "Pneus", href: "/tires" },
   { label: "Lignes", href: "/lines" },
@@ -28,7 +27,7 @@ const Home = () => {
     <DashboardLayout
       navItems={navItems}
       header={
-        <div className="flex items-center justify-between">
+        <>
           <div>
             <h1 className="text-xl font-semibold">Tableau de bord</h1>
             <p className="text-sm text-slate-500">
@@ -36,15 +35,15 @@ const Home = () => {
             </p>
           </div>
           <Button onClick={() => setOpenModal(true)}>Nouveau camion</Button>
-        </div>
+        </>
       }
     >
       <div className="mb-6 grid gap-4 lg:grid-cols-2">
         <div className="rounded-xl border bg-white p-4 shadow-sm">
           <h2 className="text-base font-semibold">Actions rapides</h2>
-              <p className="text-sm text-slate-500">
-                Accès direct aux modules opérationnels.
-              </p>
+          <p className="text-sm text-slate-500">
+            Accès direct aux modules opérationnels.
+          </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {navItems.slice(1).map((item) => (
               <Link
@@ -65,48 +64,216 @@ const Home = () => {
             <li>Champs de formulaire avec label, hint et erreurs</li>
             <li>Modale réutilisable pour créer ou éditer</li>
             <li>Boutons avec variantes et chargement</li>
-            </ul>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm">
+          <h2 className="text-base font-semibold">Composants prêts</h2>
+          <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+            <li>Sidebar navigable avec état actif automatique</li>
+            <li>Champs de formulaire avec label, hint et erreurs</li>
+            <li>Modale réutilisable pour créer ou éditer</li>
+            <li>Boutons avec variantes et chargement</li>
+          </ul>
         </div>
       </div>
 
-      <Modal
+      <FormModal
         open={openModal}
         onClose={() => setOpenModal(false)}
         title="Créer un camion"
         description="Formulaire court pour illustrer l'utilisation des inputs."
-        footer={
-          <>
-            <Button variant="ghost" onClick={() => setOpenModal(false)}>
-              Fermer
-            </Button>
-            <Button
-              onClick={() => {
-                // Placeholder action; hook to backend mutation later.
-                setOpenModal(false);
-              }}
-              disabled={!truckName || !license}
-            >
-              Sauvegarder
-            </Button>
-          </>
-        }
-      >
-        <div className="space-y-4">
-          <InputField
-            label="Nom du camion"
-            placeholder="Ex: Volvo FH16"
-            value={truckName}
-            onChange={(e) => setTruckName(e.target.value)}
-          />
-          <InputField
-            label="Immatriculation"
-            placeholder="Ex: 123-AB-45"
-            value={license}
-            onChange={(e) => setLicense(e.target.value)}
-            hint="Conservez le format utilisé dans le backend."
-          />
-        </div>
-      </Modal>
+        fields={[
+          {
+            name: "name",
+            label: "Nom du camion",
+            placeholder: "Ex: Volvo FH16",
+            required: true,
+          },
+          {
+            name: "license",
+            label: "Immatriculation",
+            placeholder: "Ex: 123-AB-45",
+            required: true,
+            hint: "Conservez le format utilisé dans le backend.",
+          },
+          {
+            name: "notes",
+            label: "Notes",
+            type: "textarea",
+            placeholder: "Remarques...",
+          },
+        ]}
+        initialValues={{ name: truckName, license }}
+        onSubmit={(values) => {
+          // Exemple: ici vous pouvez appeler votre API
+          console.log("submit values", values);
+          setTruckName((values.name as string) ?? "");
+          setLicense((values.license as string) ?? "");
+          setOpenModal(false);
+        }}
+      />
     </DashboardLayout>
   );
 };
