@@ -1,8 +1,12 @@
 import { RouterProvider } from "router-kit";
+import { useAuth } from "./hooks/useAuth";
 import routes from "./routes";
 
 function App() {
-  return <RouterProvider routes={routes} fallbackElement={<div>Loading...</div>} />;
+  useAuth();
+  return (
+    <RouterProvider routes={routes} fallbackElement={<div>Loading...</div>} />
+  );
 }
 
 export default App;

@@ -23,7 +23,7 @@ const DashboardLayout = ({
             {header}
           </div>
         )}
-        <div className="p-6 overflow-y-auto h-[90vh]">{children}</div>
+        {children}
       </main>
     </div>
   );

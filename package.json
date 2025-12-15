@@ -26,6 +26,7 @@
     "dev": "concurrently \"npm run backend run dev\" \"npm run frontend run dev\""
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "concurrently": "^9.2.1"
   }
 }
