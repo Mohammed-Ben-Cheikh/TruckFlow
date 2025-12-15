@@ -17,8 +17,6 @@ const TruckForm = ({
   onSubmit,
 }: Props) => {
   const [openModal, setOpenModal] = useState(false);
-  const [truckName, setTruckName] = useState("");
-  const [license, setLicense] = useState("");
   return (
     <FormModal
       open={open ?? openModal}
@@ -27,23 +25,10 @@ const TruckForm = ({
       description="Formulaire court pour illustrer l'utilisation des inputs."
       fields={[
         {
-          name: "name",
-          label: "Nom du camion",
-          placeholder: "Ex: Volvo FH16",
-          required: true,
-        },
-        {
-          name: "license",
+          name: "registration",
           label: "Immatriculation",
           placeholder: "Ex: 123-AB-45",
           required: true,
-          hint: "Conservez le format utilisé dans le backend.",
-        },
-        {
-          name: "notes",
-          label: "Notes",
-          type: "textarea",
-          placeholder: "Remarques...",
         },
         {
           name: "brand",
@@ -66,14 +51,14 @@ const TruckForm = ({
           ],
         },
       ]}
-      initialValues={initialValues ?? { name: truckName, license }}
+      initialValues={
+        initialValues ?? { registration: "", brand: "", model: "" }
+      }
       onSubmit={(values) => {
-        // Exemple: ici vous pouvez appeler votre API
-        console.log("submit values", values);
-        setTruckName((values.name as string) ?? "");
-        setLicense((values.license as string) ?? "");
-        setOpenModal(false);
+        // pass to parent handler which will call API
         onSubmit?.(values);
+        setOpenModal(false);
+        onClose?.();
       }}
     />
   );

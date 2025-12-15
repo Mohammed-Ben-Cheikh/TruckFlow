@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { FormModal } from "../../../components";
 
-type Props = { open?: boolean; onClose?: () => void };
+type Props = {
+  open?: boolean;
+  onClose?: () => void;
+  onSubmit?: (values: any) => void;
+};
 
-const MaintenanceForm = ({ open, onClose }: Props) => {
+const MaintenanceForm = ({ open, onClose, onSubmit }: Props) => {
   const [openModal, setOpenModal] = useState(false);
-  const [description, setDescription] = useState("");
 
   return (
     <FormModal
@@ -63,11 +66,11 @@ const MaintenanceForm = ({ open, onClose }: Props) => {
         { name: "plannedAtKm", label: "Planifié à (km)", type: "number" },
         { name: "cost", label: "Coût", type: "number" },
       ]}
-      initialValues={{ description }}
+      initialValues={{}}
       onSubmit={(values) => {
-        console.log("submit maintenance", values);
-        setDescription((values.description as string) ?? "");
+        onSubmit?.(values);
         setOpenModal(false);
+        onClose?.();
       }}
     />
   );

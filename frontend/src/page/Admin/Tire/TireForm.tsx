@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { FormModal } from "../../../components";
 
-type Props = { open?: boolean; onClose?: () => void };
+type Props = {
+  open?: boolean;
+  onClose?: () => void;
+  onSubmit?: (values: any) => void;
+};
 
-const TireForm = ({ open, onClose }: Props) => {
+const TireForm = ({ open, onClose, onSubmit }: Props) => {
   const [openModal, setOpenModal] = useState(false);
-  const [reference, setReference] = useState("");
-  const [brand, setBrand] = useState("");
 
   return (
     <FormModal
@@ -45,12 +47,11 @@ const TireForm = ({ open, onClose }: Props) => {
           ],
         },
       ]}
-      initialValues={{ reference, brand }}
+      initialValues={{}}
       onSubmit={(values) => {
-        console.log("submit tire", values);
-        setReference((values.reference as string) ?? "");
-        setBrand((values.brand as string) ?? "");
+        onSubmit?.(values);
         setOpenModal(false);
+        onClose?.();
       }}
     />
   );

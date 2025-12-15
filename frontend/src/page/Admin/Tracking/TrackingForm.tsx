@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { FormModal } from "../../../components";
 
-type Props = { open?: boolean; onClose?: () => void };
+type Props = {
+  open?: boolean;
+  onClose?: () => void;
+  onSubmit?: (values: any) => void;
+};
 
-const TrackingForm = ({ open, onClose }: Props) => {
+const TrackingForm = ({ open, onClose, onSubmit }: Props) => {
   const [openModal, setOpenModal] = useState(false);
-  const [vehicleId, setVehicleId] = useState("");
 
   return (
     <FormModal
@@ -30,11 +33,11 @@ const TrackingForm = ({ open, onClose }: Props) => {
         },
         { name: "notes", label: "Notes", type: "textarea" },
       ]}
-      initialValues={{ vehicleId }}
+      initialValues={{}}
       onSubmit={(values) => {
-        console.log("submit tracking", values);
-        setVehicleId((values.vehicleId as string) ?? "");
+        onSubmit?.(values);
         setOpenModal(false);
+        onClose?.();
       }}
     />
   );

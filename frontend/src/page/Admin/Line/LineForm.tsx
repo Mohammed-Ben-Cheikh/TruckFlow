@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FormModal } from "../../../components";
+import { useCreateLineMutation } from "../../../services/line.service";
 
 type Props = {
   open?: boolean;
@@ -8,9 +9,7 @@ type Props = {
 
 const LineForm = ({ open, onClose }: Props) => {
   const [openModal, setOpenModal] = useState(false);
-  const [code, setCode] = useState("");
-  const [departLocation, setDepartLocation] = useState("");
-  const [arriveLocation, setArriveLocation] = useState("");
+  const [createLine] = useCreateLineMutation();
 
   return (
     <FormModal
@@ -41,12 +40,12 @@ const LineForm = ({ open, onClose }: Props) => {
           placeholder: "ObjectId du chauffeur",
         },
         {
-          name: "departLocation",
+          name: "departure",
           label: "Départ",
           placeholder: "Ville de départ",
         },
         {
-          name: "arriveLocation",
+          name: "arrival",
           label: "Arrivée",
           placeholder: "Ville d'arrivée",
         },
@@ -61,13 +60,16 @@ const LineForm = ({ open, onClose }: Props) => {
           ],
         },
       ]}
-      initialValues={{ code, departLocation, arriveLocation }}
-      onSubmit={(values) => {
-        console.log("submit line", values);
-        setCode((values.code as string) ?? "");
-        setDepartLocation((values.departLocation as string) ?? "");
-        setArriveLocation((values.arriveLocation as string) ?? "");
+      initialValues={{}}
+      onSubmit={async (values) => {
+        try {
+          await createLine(values as any).unwrap();
+        } catch (err) {
+          // handle error (toast/modal) if needed
+          console.error("create line error", err);
+        }
         setOpenModal(false);
+        onClose?.();
       }}
     />
   );

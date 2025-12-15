@@ -1,4 +1,5 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQueryWithToast } from "./baseQueryWithToast";
 
 interface Credentials {
   email: string;
@@ -19,28 +20,31 @@ interface TokenData {
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/" }),
+  baseQuery: baseQueryWithToast,
   endpoints: (builder) => ({
-    login: builder.mutation({
+    login: builder.mutation<any, Credentials>({
       query: (credentials: Credentials) => ({
         url: "auth/login",
         method: "POST",
         body: credentials,
       }),
+      transformResponse: (response: any) => response?.data ?? response,
     }),
-    register: builder.mutation({
+    register: builder.mutation<any, UserData>({
       query: (userData: UserData) => ({
         url: "auth/register",
         method: "POST",
         body: userData,
       }),
+      transformResponse: (response: any) => response?.data ?? response,
     }),
-    validate: builder.mutation({
+    validate: builder.mutation<any, TokenData>({
       query: (tokenData: TokenData) => ({
         url: "auth/validate",
         method: "POST",
         body: tokenData,
       }),
+      transformResponse: (response: any) => response?.data ?? response,
     }),
   }),
 });

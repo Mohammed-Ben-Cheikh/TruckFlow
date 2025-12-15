@@ -41,7 +41,20 @@ const Login = () => {
     setErrors({});
     try {
       const result = await login({ email, password }).unwrap();
-      dispatch(loginSuccess({ user: result.user, token: result.token }));
+      // backend wraps payload into { success, message, data, error }
+      const payload = (result && (result.data ?? result)) || result;
+      const token = payload?.token ?? null;
+      const user = payload?.user ?? null;
+      if (!token) {
+        throw new Error("Token manquant dans la réponse d'authentification");
+      }
+      dispatch(loginSuccess({ user, token }));
+      // store token so fetchBaseQuery prepareHeaders can use it
+      try {
+        localStorage.setItem("token", token);
+      } catch (e) {
+        console.warn("Could not save token to localStorage", e);
+      }
       navigate("/", { replace: true });
     } catch (err) {
       const errorMessage =

@@ -4,45 +4,34 @@ import Button from "../../../components/ui/Button";
 import DeleteConfirm from "../../../components/ui/DeleteConfirm";
 import type { Column } from "../../../components/ui/Table";
 import Table from "../../../components/ui/Table";
+import {
+  useCreateTruckMutation,
+  useDeleteTruckMutation,
+  useGetTrucksQuery,
+  useUpdateTruckMutation,
+} from "../../../services/truck.service";
 import TruckForm from "./TruckForm";
 
 type TruckType = {
   id: string;
-  name: string;
-  license: string;
+  registration: string;
   brand?: string;
   model?: string;
   status?: string;
 };
 
-const initialData: TruckType[] = [
-  {
-    id: "1",
-    name: "Volvo FH16",
-    license: "123-AB-45",
-    brand: "Volvo",
-    model: "FH16",
-    status: "available",
-  },
-  {
-    id: "2",
-    name: "Scania R500",
-    license: "987-CD-21",
-    brand: "Scania",
-    model: "R500",
-    status: "maintenance",
-  },
-];
-
 const Truck = () => {
   const [open, setOpen] = useState(false);
-  const [rows, setRows] = useState<TruckType[]>(initialData);
   const [editing, setEditing] = useState<TruckType | null>(null);
   const [toDelete, setToDelete] = useState<TruckType | null>(null);
 
+  const { data: trucks, isLoading, refetch } = useGetTrucksQuery();
+  const [createTruck] = useCreateTruckMutation();
+  const [updateTruck] = useUpdateTruckMutation();
+  const [deleteTruck] = useDeleteTruckMutation();
+
   const columns: Column<TruckType>[] = [
-    { key: "name", title: "Nom" },
-    { key: "license", title: "Immatriculation" },
+    { key: "registration", title: "Immatriculation" },
     { key: "brand", title: "Marque" },
     { key: "model", title: "Modèle" },
     { key: "status", title: "Statut" },
@@ -62,27 +51,38 @@ const Truck = () => {
     setToDelete(row);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!toDelete) return;
-    setRows((prev) => prev.filter((r) => r.id !== toDelete.id));
+    try {
+      await deleteTruck(toDelete.id).unwrap();
+      refetch();
+    } catch (err) {
+      console.error("delete truck error", err);
+    }
     setToDelete(null);
   };
 
-  const upsert = (values: Partial<TruckType> & { id?: string }) => {
-    if (values.id) {
-      setRows((prev) =>
-        prev.map((r) =>
-          r.id === values.id ? { ...r, ...(values as Partial<TruckType>) } : r
-        )
-      );
-    } else {
-      const id = String(Date.now());
-      setRows((prev) => [
-        { id, ...(values as Partial<TruckType>) } as TruckType,
-        ...prev,
-      ]);
+  const upsert = async (values: Partial<TruckType> & { id?: string }) => {
+    try {
+      if (values.id) {
+        await updateTruck({ slug: values.id, data: values }).unwrap();
+      } else {
+        await createTruck(values).unwrap();
+      }
+      refetch();
+    } catch (err) {
+      console.error("upsert truck error", err);
     }
   };
+
+  const rows: TruckType[] =
+    (trucks || []).map((t: any) => ({
+      id: t.slug ?? t._id,
+      registration: t.registration,
+      brand: t.brand,
+      model: t.model,
+      status: t.status,
+    })) ?? [];
 
   return (
     <Page
@@ -97,6 +97,8 @@ const Truck = () => {
       }
     >
       <div className="space-y-4">
+        {isLoading && <div>Chargement...</div>}
+
         <Table
           columns={columns}
           data={rows}
@@ -109,8 +111,8 @@ const Truck = () => {
           onClose={() => setOpen(false)}
           title={editing ? "Modifier un camion" : "Créer un camion"}
           initialValues={editing ?? undefined}
-          onSubmit={(values) => {
-            upsert(values);
+          onSubmit={async (values) => {
+            await upsert(values);
             setOpen(false);
           }}
         />

@@ -4,6 +4,12 @@ import Button from "../../../components/ui/Button";
 import DeleteConfirm from "../../../components/ui/DeleteConfirm";
 import type { Column } from "../../../components/ui/Table";
 import Table from "../../../components/ui/Table";
+import {
+  useCreateTrailerMutation,
+  useDeleteTrailerMutation,
+  useGetTrailersQuery,
+  useUpdateTrailerMutation,
+} from "../../../services/trailer.service";
 import TrailerForm from "./TrailerForm";
 
 type TrailerType = {
@@ -14,27 +20,15 @@ type TrailerType = {
   status?: string;
 };
 
-const initialData: TrailerType[] = [
-  {
-    id: "t1",
-    registration: "321-XZ-98",
-    brand: "Krone",
-    type: "Reefer",
-    status: "available",
-  },
-  {
-    id: "t2",
-    registration: "654-YQ-22",
-    brand: "Schmitz",
-    type: "Flatbed",
-    status: "on_trip",
-  },
-];
-
 const Trailer = () => {
   const [open, setOpen] = useState(false);
-  const [rows, setRows] = useState<TrailerType[]>(initialData);
+  const [editing, setEditing] = useState<TrailerType | null>(null);
   const [toDelete, setToDelete] = useState<TrailerType | null>(null);
+
+  const { data: trailers, isLoading, refetch } = useGetTrailersQuery();
+  const [createTrailer] = useCreateTrailerMutation();
+  const [updateTrailer] = useUpdateTrailerMutation();
+  const [deleteTrailer] = useDeleteTrailerMutation();
 
   const columns: Column<TrailerType>[] = [
     { key: "registration", title: "Immatriculation" },
@@ -42,6 +36,53 @@ const Trailer = () => {
     { key: "type", title: "Type" },
     { key: "status", title: "Statut" },
   ];
+
+  const handleCreate = () => {
+    setEditing(null);
+    setOpen(true);
+  };
+
+  const handleEdit = (row: TrailerType) => {
+    setEditing(row);
+    setOpen(true);
+  };
+
+  const handleDelete = (row: TrailerType) => {
+    setToDelete(row);
+  };
+
+  const confirmDelete = async () => {
+    if (!toDelete) return;
+    try {
+      await deleteTrailer(toDelete.id).unwrap();
+      refetch();
+    } catch (err) {
+      console.error("delete trailer error", err);
+    }
+    setToDelete(null);
+  };
+
+  const upsert = async (values: Partial<TrailerType> & { id?: string }) => {
+    try {
+      if (values.id) {
+        await updateTrailer({ slug: values.id, data: values }).unwrap();
+      } else {
+        await createTrailer(values as any).unwrap();
+      }
+      refetch();
+    } catch (err) {
+      console.error("upsert trailer error", err);
+    }
+  };
+
+  const rows: TrailerType[] =
+    (trailers || []).map((t: any) => ({
+      id: t.slug ?? t._id,
+      registration: t.registration,
+      brand: t.brand,
+      type: t.type,
+      status: t.status,
+    })) ?? [];
 
   return (
     <Page
@@ -51,32 +92,35 @@ const Trailer = () => {
             <h1 className="text-xl font-semibold">Remorques</h1>
             <p className="text-sm text-slate-500">Liste des remorques.</p>
           </div>
-          <Button onClick={() => setOpen(true)}>Nouvelle remorque</Button>
+          <Button onClick={handleCreate}>Nouvelle remorque</Button>
         </>
       }
     >
       <div className="space-y-4">
-        <Table columns={columns} data={rows} onDelete={(r) => setToDelete(r)} />
+        {isLoading && <div>Chargement...</div>}
+
+        <Table
+          columns={columns}
+          data={rows}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
 
         <TrailerForm
           open={open}
           onClose={() => setOpen(false)}
-          onSubmit={(values) =>
-            setRows((s) => [
-              { id: String(Date.now()), ...(values as any) },
-              ...s,
-            ])
-          }
+          title={editing ? "Modifier une remorque" : "Créer une remorque"}
+          initialValues={editing ?? undefined}
+          onSubmit={async (values) => {
+            await upsert(values);
+            setOpen(false);
+          }}
         />
 
         <DeleteConfirm
           open={!!toDelete}
           onClose={() => setToDelete(null)}
-          onConfirm={() => {
-            if (!toDelete) return;
-            setRows((r) => r.filter((x) => x.id !== toDelete.id));
-            setToDelete(null);
-          }}
+          onConfirm={confirmDelete}
         />
       </div>
     </Page>
