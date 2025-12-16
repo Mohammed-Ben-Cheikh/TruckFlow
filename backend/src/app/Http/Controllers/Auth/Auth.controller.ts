@@ -23,7 +23,11 @@ class AuthController {
       );
       return decodedData.email;
     } catch (error) {
-      console.error("Error decrypting token:", error);
+      // Avoid noisy logging for invalid tokens during tests or regular usage.
+      // Only log when not running tests to keep test output clean.
+      if (process.env.NODE_ENV !== "test") {
+        console.error("Error decrypting token:", error);
+      }
       return null;
     }
   };

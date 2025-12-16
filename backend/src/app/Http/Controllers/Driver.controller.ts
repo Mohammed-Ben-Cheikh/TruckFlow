@@ -5,9 +5,10 @@ import User from "../../models/User";
 class DriverController {
   static async listDrivers(req: Request, res: Response, next: NextFunction) {
     try {
-      const drivers = await User.find({ role: "employé", isActive: true }).select(
-        "-password"
-      );
+      const drivers = await User.find({
+        role: "employé",
+        isActive: true,
+      }).select("-password");
       if (drivers.length === 0) {
         return res.error("Aucun chauffeur trouvé", 404);
       }
@@ -33,7 +34,7 @@ class DriverController {
   static async getDriverLines(req: Request, res: Response, next: NextFunction) {
     try {
       const driverId =
-        req.user?.role === "employé" ? req.user.userId : req.params.id;
+        req.user?.role === "employé" ? req.user.userId : req.params?.id;
       if (!driverId) {
         return res.error("ID du chauffeur manquant", 400);
       }
@@ -51,4 +52,3 @@ class DriverController {
 }
 
 export default DriverController;
-
