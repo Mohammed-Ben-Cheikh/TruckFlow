@@ -8,5 +8,25 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  truckflow:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: truckflow-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+      - "5173:5173"
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/truckflow
+      - JWT_SECRET=your_jwt_secret_here
+      - PORT=3000
+      - VITE_API_URL=http://localhost:3000
+    depends_on:
+      - mongo
+    volumes:
+      - ./backend/uploads:/app/backend/uploads
+
 volumes:
   mongo-data:

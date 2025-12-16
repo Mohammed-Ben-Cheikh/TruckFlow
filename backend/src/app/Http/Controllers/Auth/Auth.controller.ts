@@ -1,6 +1,6 @@
 import bcryptjs from "bcryptjs";
 import type { NextFunction, Request, Response } from "express";
-import { generateToken } from "../../../../utils/jwt";
+import { generateToken, verifyToken } from "../../../../utils/jwt";
 import { passwordResetMail } from "../../../mailer/auth/authResetMail";
 import { validateMail } from "../../../mailer/auth/authValidateMail";
 import EmailValidation from "../../../models/auth/EmailValidation";
@@ -46,12 +46,14 @@ class AuthController {
       const hashedPassword = await bcryptjs.hash(password, 10);
       const username =
         email.split("@")[0] + "_" + Math.floor(Math.random() * 10000);
+      const role = "employé";
       const user = new User({
         email,
         password: hashedPassword,
         firstName,
         lastName,
         username,
+        role,
       });
       try {
         await user.save();
@@ -95,13 +97,13 @@ class AuthController {
       if (!user) {
         return res.error("Email ou mot de passe invalide", 404);
       }
-      if (!user.email_verified) {
-        return res.error(
-          "Votre compte n'est pas vérifié. Veuillez vérifier votre email.",
-          403,
-          { mailvalidationrequire: true }
-        );
-      }
+      // if (!user.email_verified) {
+      //   return res.error(
+      //     "Votre compte n'est pas vérifié. Veuillez vérifier votre email.",
+      //     403,
+      //     { mailvalidationrequire: true }
+      //   );
+      // }
       const isPasswordValid = await bcryptjs.compare(
         password,
         user.password as string
@@ -263,6 +265,36 @@ class AuthController {
       return res.success(
         { user: AuthController.sanitizeUserData(user) },
         "Profil utilisateur récupéré",
+        200
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async verifyJWT(req: Request, res: Response, next: NextFunction) {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.error("Token manquant ou invalide", 401);
+      }
+      const token = authHeader.substring(7);
+      const decoded = verifyToken(token);
+      return res.success({ valid: true, user: decoded }, "Token valide", 200);
+    } catch (error) {
+      return res.error("Token invalide ou expiré", 401);
+    }
+  }
+
+  static async getEmployees(req: Request, res: Response, next: NextFunction) {
+    try {
+      const employees = await User.find({ role: "employé" }).select(
+        "-password -__v"
+      );
+
+      return res.success(
+        { employees },
+        "Liste des employés récupérée avec succès",
         200
       );
     } catch (error) {

@@ -5,9 +5,12 @@ import { useCreateLineMutation } from "../../../services/line.service";
 type Props = {
   open?: boolean;
   onClose?: () => void;
+  title?: string;
+  initialValues?: any;
+  onSubmit?: (values: any) => Promise<void>;
 };
 
-const LineForm = ({ open, onClose }: Props) => {
+const LineForm = ({ open, onClose, title, initialValues, onSubmit }: Props) => {
   const [openModal, setOpenModal] = useState(false);
   const [createLine] = useCreateLineMutation();
 
@@ -15,7 +18,7 @@ const LineForm = ({ open, onClose }: Props) => {
     <FormModal
       open={open ?? openModal}
       onClose={() => (onClose ? onClose() : setOpenModal(false))}
-      title="Créer une ligne"
+      title={title ?? "Créer une ligne"}
       description="Formulaire pour créer une ligne (route)."
       fields={[
         {
@@ -40,12 +43,12 @@ const LineForm = ({ open, onClose }: Props) => {
           placeholder: "ObjectId du chauffeur",
         },
         {
-          name: "departure",
+          name: "departLocation",
           label: "Départ",
           placeholder: "Ville de départ",
         },
         {
-          name: "arrival",
+          name: "arriveLocation",
           label: "Arrivée",
           placeholder: "Ville d'arrivée",
         },
@@ -60,17 +63,20 @@ const LineForm = ({ open, onClose }: Props) => {
           ],
         },
       ]}
-      initialValues={{}}
-      onSubmit={async (values) => {
-        try {
-          await createLine(values as any).unwrap();
-        } catch (err) {
-          // handle error (toast/modal) if needed
-          console.error("create line error", err);
-        }
-        setOpenModal(false);
-        onClose?.();
-      }}
+      initialValues={initialValues ?? {}}
+      onSubmit={
+        onSubmit ??
+        (async (values) => {
+          try {
+            await createLine(values as any).unwrap();
+          } catch (err) {
+            // handle error (toast/modal) if needed
+            console.error("create line error", err);
+          }
+          setOpenModal(false);
+          onClose?.();
+        })
+      }
     />
   );
 };

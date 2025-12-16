@@ -6,8 +6,8 @@ interface Line {
   truck?: string;
   trailer?: string;
   driver?: string;
-  departure?: string;
-  arrival?: string;
+  departLocation?: string;
+  arriveLocation?: string;
   status?: string;
   createdAt?: string;
 }

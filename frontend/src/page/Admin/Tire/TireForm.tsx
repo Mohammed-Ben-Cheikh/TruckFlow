@@ -4,17 +4,19 @@ import { FormModal } from "../../../components";
 type Props = {
   open?: boolean;
   onClose?: () => void;
+  title?: string;
+  initialValues?: any;
   onSubmit?: (values: any) => void;
 };
 
-const TireForm = ({ open, onClose, onSubmit }: Props) => {
+const TireForm = ({ open, onClose, title, initialValues, onSubmit }: Props) => {
   const [openModal, setOpenModal] = useState(false);
 
   return (
     <FormModal
       open={open ?? openModal}
       onClose={() => (onClose ? onClose() : setOpenModal(false))}
-      title="Créer un pneu"
+      title={title ?? "Créer un pneu"}
       description="Formulaire pour ajouter un pneu."
       fields={[
         {
@@ -47,7 +49,7 @@ const TireForm = ({ open, onClose, onSubmit }: Props) => {
           ],
         },
       ]}
-      initialValues={{}}
+      initialValues={initialValues ?? {}}
       onSubmit={(values) => {
         onSubmit?.(values);
         setOpenModal(false);

@@ -4,17 +4,25 @@ import { FormModal } from "../../../components";
 type Props = {
   open?: boolean;
   onClose?: () => void;
+  title?: string;
+  initialValues?: any;
   onSubmit?: (values: any) => void;
 };
 
-const TrackingForm = ({ open, onClose, onSubmit }: Props) => {
+const TrackingForm = ({
+  open,
+  onClose,
+  title,
+  initialValues,
+  onSubmit,
+}: Props) => {
   const [openModal, setOpenModal] = useState(false);
 
   return (
     <FormModal
       open={open ?? openModal}
       onClose={() => (onClose ? onClose() : setOpenModal(false))}
-      title="Ajouter un point de suivi"
+      title={title ?? "Ajouter un point de suivi"}
       description="Formulaire simple pour ajouter un point de suivi."
       fields={[
         {
@@ -33,7 +41,7 @@ const TrackingForm = ({ open, onClose, onSubmit }: Props) => {
         },
         { name: "notes", label: "Notes", type: "textarea" },
       ]}
-      initialValues={{}}
+      initialValues={initialValues ?? {}}
       onSubmit={(values) => {
         onSubmit?.(values);
         setOpenModal(false);

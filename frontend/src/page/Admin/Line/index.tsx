@@ -10,12 +10,12 @@ import {
   useGetLinesQuery,
   useUpdateLineMutation,
 } from "../../../services/line.service";
-import LineForm from "./LineForm";
+import LineForm from "./LineFormEnhanced";
 
 type LineType = {
   id: string;
-  departure?: string;
-  arrival?: string;
+  departLocation?: string;
+  arriveLocation?: string;
   status?: string;
 };
 
@@ -30,8 +30,8 @@ const Line = () => {
   const [deleteLine] = useDeleteLineMutation();
 
   const columns: Column<LineType>[] = [
-    { key: "departure", title: "Départ" },
-    { key: "arrival", title: "Arrivée" },
+    { key: "departLocation", title: "Départ" },
+    { key: "arriveLocation", title: "Arrivée" },
     { key: "status", title: "Statut" },
   ];
 
@@ -76,8 +76,8 @@ const Line = () => {
   const rows: LineType[] =
     (lines || []).map((l: any) => ({
       id: l.slug ?? l._id,
-      departure: l.departure,
-      arrival: l.arrival,
+      departLocation: l.departLocation,
+      arriveLocation: l.arriveLocation,
       status: l.status,
     })) ?? [];
 

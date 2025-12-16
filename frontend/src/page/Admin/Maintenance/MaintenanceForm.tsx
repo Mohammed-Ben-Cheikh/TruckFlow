@@ -4,17 +4,25 @@ import { FormModal } from "../../../components";
 type Props = {
   open?: boolean;
   onClose?: () => void;
+  title?: string;
+  initialValues?: any;
   onSubmit?: (values: any) => void;
 };
 
-const MaintenanceForm = ({ open, onClose, onSubmit }: Props) => {
+const MaintenanceForm = ({
+  open,
+  onClose,
+  title,
+  initialValues,
+  onSubmit,
+}: Props) => {
   const [openModal, setOpenModal] = useState(false);
 
   return (
     <FormModal
       open={open ?? openModal}
       onClose={() => (onClose ? onClose() : setOpenModal(false))}
-      title="Créer une maintenance"
+      title={title ?? "Créer une maintenance"}
       description="Formulaire pour planifier une maintenance."
       fields={[
         {
@@ -66,7 +74,7 @@ const MaintenanceForm = ({ open, onClose, onSubmit }: Props) => {
         { name: "plannedAtKm", label: "Planifié à (km)", type: "number" },
         { name: "cost", label: "Coût", type: "number" },
       ]}
-      initialValues={{}}
+      initialValues={initialValues ?? {}}
       onSubmit={(values) => {
         onSubmit?.(values);
         setOpenModal(false);

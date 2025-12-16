@@ -53,4 +53,8 @@ authRoutes.post(
   AuthController.resetMessage
 );
 
+authRoutes.get("/verify-jwt", AuthController.verifyJWT);
+
+authRoutes.get("/employees", AuthController.getEmployees);
+
 export default authRoutes;

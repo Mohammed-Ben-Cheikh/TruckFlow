@@ -7,34 +7,58 @@ import LineDetailModal from "./LineDetailModal";
 
 type LineType = {
   id: string;
-  departure?: string;
-  arrival?: string;
+  departLocation?: string;
+  arriveLocation?: string;
   status?: string;
-  truck?: string;
-  trailer?: string;
-  driver?: string;
+  truck?: {
+    registration?: string;
+    brand?: string;
+    model?: string;
+  };
+  trailer?: {
+    registration?: string;
+    brand?: string;
+    model?: string;
+  };
+  driver?: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+  };
 };
 
 type ApiLineType = {
   slug?: string;
   _id?: string;
-  departure?: string;
-  arrival?: string;
+  departLocation?: string;
+  arriveLocation?: string;
   status?: string;
-  truck?: string;
-  trailer?: string;
-  driver?: string;
+  truck?: {
+    registration?: string;
+    brand?: string;
+    model?: string;
+  };
+  trailer?: {
+    registration?: string;
+    brand?: string;
+    model?: string;
+  };
+  driver?: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+  };
 };
 
-const Line = () => {
+const DriverLine = () => {
   const [selectedLine, setSelectedLine] = useState<LineType | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: lines, isLoading } = useGetLinesQuery();
 
   const columns: Column<LineType>[] = [
-    { key: "departure", title: "Départ" },
-    { key: "arrival", title: "Arrivée" },
+    { key: "departLocation", title: "Départ" },
+    { key: "arriveLocation", title: "Arrivée" },
     { key: "status", title: "Statut" },
   ];
 
@@ -46,8 +70,8 @@ const Line = () => {
   const rows: LineType[] =
     (lines || []).map((l: ApiLineType) => ({
       id: l.slug ?? l._id ?? "",
-      departure: l.departure,
-      arrival: l.arrival,
+      departLocation: l.departLocation,
+      arriveLocation: l.arriveLocation,
       status: l.status,
       truck: l.truck,
       trailer: l.trailer,
@@ -70,7 +94,12 @@ const Line = () => {
       <div className="space-y-4">
         {isLoading && <div>Chargement...</div>}
 
-        <Table columns={columns} data={rows} onEdit={handleViewDetails} />
+        <Table
+          columns={columns}
+          data={rows}
+          onEdit={handleViewDetails}
+          editButtonText="Voir détail"
+        />
 
         <LineDetailModal
           open={isModalOpen}
@@ -82,4 +111,4 @@ const Line = () => {
   );
 };
 
-export default Line;
+export default DriverLine;

@@ -46,8 +46,19 @@ export const authApi = createApi({
       }),
       transformResponse: (response: any) => response?.data ?? response,
     }),
+    getEmployees: builder.query<any, void>({
+      query: () => ({
+        url: "auth/employees",
+        method: "GET",
+      }),
+      transformResponse: (response: any) => response?.data ?? response,
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useValidateMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useValidateMutation,
+  useGetEmployeesQuery,
+} = authApi;

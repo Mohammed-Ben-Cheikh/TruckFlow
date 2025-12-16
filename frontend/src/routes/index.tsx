@@ -7,10 +7,34 @@ import TirePage from "../page/Admin/Tire";
 import TrackingPage from "../page/Admin/Tracking";
 import TrailerPage from "../page/Admin/Trailer";
 import TruckPage from "../page/Admin/Truck";
+import UsersPage from "../page/Admin/Users";
 import Login from "../page/Auth/Login";
 import DriverHome from "../page/Driver/Home";
 import DriverDashboardLayout from "../page/Driver/layout";
+import DriverLine from "../page/Driver/Line";
 
+const authMiddleware = async (role: string): Promise<boolean | string> => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return "login";
+
+    const res = await fetch("http://localhost:3000/api/auth/verify-jwt", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) return "login";
+    
+    const data = await res.json();
+    return data.data.user.role === role;
+  } catch (error) {
+    console.error("Auth verification failed:", error);
+    return "login";
+  }
+};
 const routes = createRouter([
   {
     path: "/login",
@@ -20,15 +44,7 @@ const routes = createRouter([
   {
     path: "/",
     component: <AdminDashboardLayout />,
-    errorElement: <div>Error loading admin home</div>,
-    loading: <div>Loading admin home...</div>,
-    guard: async () => {
-      const res = await fetch("https://restcountries.com/v3.1/all?fields=name");
-      console.log(await res.json());
-      // Example guard logic for admin routes
-      const isAdmin = true; // Replace with actual authentication logic
-      return isAdmin || "/login";
-    },
+    guard: () => authMiddleware("admin"),
     children: [
       {
         index: true,
@@ -58,20 +74,24 @@ const routes = createRouter([
         path: "tracking",
         component: <TrackingPage />,
       },
+      {
+        path: "users",
+        component: <UsersPage />,
+      },
     ],
-    // guard: () => {
-    //   // Example guard logic for admin routes
-    //   const isAdmin = false; // Replace with actual authentication logic
-    //   return isAdmin || "/login";
-    // }
   },
   {
     path: "/",
     component: <DriverDashboardLayout />,
+    guard: () => authMiddleware("employé"),
     children: [
       {
         index: true,
         component: <DriverHome />,
+      },
+      {
+        path: "/lines",
+        component: <DriverLine />,
       },
     ],
   },

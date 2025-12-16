@@ -14,6 +14,8 @@ type Props<T> = {
   emptyText?: string;
   onEdit?: (row: T) => void;
   onDelete?: (row: T) => void;
+  editButtonText?: string;
+  deleteButtonText?: string;
   rowKey?: (row: T) => string | number;
   className?: string;
   maxHeight?: string;
@@ -27,6 +29,8 @@ const Table = <T extends Record<string, unknown>>({
   emptyText = "Aucun enregistrement",
   onEdit,
   onDelete,
+  editButtonText = "Modifier",
+  deleteButtonText = "Supprimer",
   rowKey = (r) => (r.id as string | number) ?? JSON.stringify(r),
   className,
   maxHeight,
@@ -97,7 +101,9 @@ const Table = <T extends Record<string, unknown>>({
                         variant="ghost"
                         onClick={() => onEdit(row)}
                       >
-                        <span className="hidden md:inline">Modifier</span>
+                        <span className="hidden md:inline">
+                          {editButtonText}
+                        </span>
                         <span className="md:hidden">✏️</span>
                       </Button>
                     )}
@@ -107,7 +113,9 @@ const Table = <T extends Record<string, unknown>>({
                         variant="danger"
                         onClick={() => onDelete(row)}
                       >
-                        <span className="hidden md:inline">Supprimer</span>
+                        <span className="hidden md:inline">
+                          {deleteButtonText}
+                        </span>
                         <span className="md:hidden">🗑️</span>
                       </Button>
                     )}
@@ -139,7 +147,9 @@ const Table = <T extends Record<string, unknown>>({
                   className="flex items-start justify-between gap-4"
                 >
                   <div className="text-xs text-slate-500">{col.title}</div>
-                  <div className="text-sm text-slate-800">{col.render ? col.render(row) : String(row[col.key] ?? "")}</div>
+                  <div className="text-sm text-slate-800">
+                    {col.render ? col.render(row) : String(row[col.key] ?? "")}
+                  </div>
                   <div className="text-sm text-slate-800">
                     {col.render ? col.render(row) : String(row[col.key] ?? "")}
                   </div>
@@ -153,7 +163,7 @@ const Table = <T extends Record<string, unknown>>({
                       variant="ghost"
                       onClick={() => onEdit(row)}
                     >
-                      Modifier
+                      {editButtonText}
                     </Button>
                   )}
                   {onDelete && (
@@ -162,7 +172,7 @@ const Table = <T extends Record<string, unknown>>({
                       variant="danger"
                       onClick={() => onDelete(row)}
                     >
-                      Supprimer
+                      {deleteButtonText}
                     </Button>
                   )}
                 </div>
